@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Diet Plan</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.breakfast.label }} {{ form.breakfast(class="form-control") }}<br>
+    {{ form.lunch.label }} {{ form.lunch(class="form-control") }}<br>
+    {{ form.dinner.label }} {{ form.dinner(class="form-control") }}<br>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% if meals %}
+<hr>
+<h4>Meal Suggestions:</h4>
+<ul>
+    <li><strong>Breakfast:</strong> {{ meals.breakfast }}</li>
+    <li><strong>Lunch:</strong> {{ meals.lunch }}</li>
+    <li><strong>Dinner:</strong> {{ meals.dinner }}</li>
+</ul>
+{% endif %}
+{% endblock %}

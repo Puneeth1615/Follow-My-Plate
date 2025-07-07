@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Complete Your Profile</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.age.label }} {{ form.age(class="form-control") }}</div>
+    <div class="mb-3">{{ form.height.label }} {{ form.height(class="form-control") }}</div>
+    <div class="mb-3">{{ form.weight.label }} {{ form.weight(class="form-control") }}</div>
+    <div class="mb-3">{{ form.gender.label }} {{ form.gender(class="form-control") }}</div>
+    <div class="mb-3">{{ form.goal.label }} {{ form.goal(class="form-control") }}</div>
+    <button type="submit" class="btn btn-success">{{ form.submit.label }}</button>
+</form>
+{% endblock %}
