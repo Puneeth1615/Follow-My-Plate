@@ -6,6 +6,12 @@ from flask_login import LoginManager
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yoursecretkey'
 
+
+print("DATABASE_URL from env:", os.getenv("DATABASE_URL"))
+
+
+
+
 # ✅ Fix: patch postgres:// to postgresql://
 uri = os.getenv("DATABASE_URL")
 if uri and uri.startswith("postgres://"):
