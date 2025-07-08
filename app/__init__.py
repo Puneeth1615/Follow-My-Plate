@@ -2,14 +2,13 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import sys
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yoursecretkey'
 
 
-print("DATABASE_URL from env:", os.getenv("DATABASE_URL"))
-
-
+print("DATABASE_URL from os.environ:", repr(os.environ.get("DATABASE_URL")), file=sys.stderr)
 
 
 # ✅ Fix: patch postgres:// to postgresql://
