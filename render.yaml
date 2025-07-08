@@ -9,4 +9,4 @@ services:
     pythonVersion: 3.11.9
     envVars:
       - key: DATABASE_URL
-        value: postgresql://follow_my_plate_db_user:YOUR_PASSWORD@YOUR_HOST/follow_my_plate_db
+        value:value: postgresql://follow_my_plate_db_user:nxsvBMiWdCEpoDwuYLpk5r8gSYxn0pqz@dpg-d1mdl963jp1c73em85e0-a.singapore-postgres.render.com/follow_my_plate_db
