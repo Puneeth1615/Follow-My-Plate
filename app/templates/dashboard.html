@@ -1,21 +1,27 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
-<h2>Your Diet Plan</h2>
-<form method="POST">
-    {{ form.hidden_tag() }}
-    {{ form.breakfast.label }} {{ form.breakfast(class="form-control") }}<br>
-    {{ form.lunch.label }} {{ form.lunch(class="form-control") }}<br>
-    {{ form.dinner.label }} {{ form.dinner(class="form-control") }}<br>
-    {{ form.submit(class="btn btn-primary") }}
-</form>
+<h2 class="text-center mb-4">🍽️ Your Personalized Meal Plan</h2>
 
 {% if meals %}
-<hr>
-<h4>Meal Suggestions:</h4>
-<ul>
-    <li><strong>Breakfast:</strong> {{ meals.breakfast }}</li>
-    <li><strong>Lunch:</strong> {{ meals.lunch }}</li>
-    <li><strong>Dinner:</strong> {{ meals.dinner }}</li>
-</ul>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for meal in meals %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ meal.name }}</h5>
+                        <p class="card-text">{{ meal.description }}</p>
+                        {% if meal.calories %}
+                            <p class="text-muted"><small>{{ meal.calories }} kcal</small></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="text-center text-muted">No meals generated yet. Please complete your profile and diet info to see suggestions.</p>
 {% endif %}
+
 {% endblock %}
+

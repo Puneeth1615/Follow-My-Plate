@@ -5,3 +5,73 @@ body {
 h2 {
     margin-bottom: 20px;
 }
+/* General Layout */
+body {
+    background-color: #f7fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    margin-left: 15px;
+}
+
+/* Forms */
+form {
+    max-width: 500px;
+    margin: auto;
+}
+
+form .form-control {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+form .btn {
+    width: 100%;
+    font-weight: bold;
+}
+
+/* Flash Messages */
+.alert {
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Dashboard Cards (optional if used later) */
+.card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer */
+footer {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Utility */
+.mt-3, .my-3 {
+    margin-top: 1rem !important;
+}
+.mt-4, .my-4 {
+    margin-top: 1.5rem !important;
+}
