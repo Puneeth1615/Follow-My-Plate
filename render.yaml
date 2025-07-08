@@ -5,8 +5,8 @@ services:
     region: singapore
     branch: main
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn run:app
+    pythonVersion: 3.11.9
     envVars:
       - key: DATABASE_URL
-        sync: false
-    pythonVersion: 3.11.9
+        value: postgresql://follow_my_plate_db_user:YOUR_PASSWORD@YOUR_HOST/follow_my_plate_db
