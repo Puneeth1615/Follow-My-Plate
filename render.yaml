@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: follow-my-plate
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn run:app"
+    pythonVersion: 3.11
