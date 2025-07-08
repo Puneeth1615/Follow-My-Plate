@@ -1,7 +1,12 @@
 services:
   - type: web
     name: follow-my-plate
-    env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn run:app"
-    pythonVersion: 3.11
+    runtime: python
+    region: singapore
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+    pythonVersion: 3.11.9
