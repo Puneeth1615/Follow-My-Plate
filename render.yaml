@@ -6,7 +6,7 @@ services:
     branch: main
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app
-    pythonVersion: 3.11.9 
+    pythonVersion: 3.11.0 # Changed to a very specific, stable 3.11.0
     envVars:
       - key: DATABASE_URL
         value: postgresql://follow_my_plate_db_user:nxsvBMiWdCEpoDwuYLpk5r8gSYxn0pqz@dpg-d1mdl963jp1c73em85e0-a.singapore-postgres.render.com/follow_my_plate_db
