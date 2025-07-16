@@ -1,27 +1,152 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2 class="text-center mb-4">🍽️ Your Personalized Meal Plan</h2>
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Welcome, {{ user.name }}!</h2>
+      <a href="{{ url_for('profile') }}" class="btn btn-outline-primary">Update Profile</a>
+    </div>
 
-{% if meals %}
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        {% for meal in meals %}
-            <div class="col">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ meal.name }}</h5>
-                        <p class="card-text">{{ meal.description }}</p>
-                        {% if meal.calories %}
-                            <p class="text-muted"><small>{{ meal.calories }} kcal</small></p>
-                        {% endif %}
-                    </div>
+    <div class="row mb-4">
+      <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h5 class="card-title">Daily Target</h5>
+            <p class="display-6 text-primary">{{ daily_calories }} kcal</p>
+            <small class="text-muted">Based on your profile & goal</small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h5 class="card-title">Consumed Today</h5>
+            <p class="display-6 text-warning">{{ calories_consumed }} kcal</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card text-center h-100">
+          <div class="card-body d-flex flex-column justify-content-center">
+            <h5 class="card-title">Remaining</h5>
+            {% if calories_remaining > 0 %}
+              <p class="display-6 text-success">{{ calories_remaining }} kcal</p>
+            {% else %}
+              <p class="display-6 text-danger">{{ calories_remaining }} kcal</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Add Food Entry</h5>
+        <form method="POST" action="{{ url_for('dashboard') }}">
+            {{ food_entry_form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ food_entry_form.description.label }}
+                    {{ food_entry_form.description(class="form-control") }}
+                    {% for error in food_entry_form.description.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {{ food_entry_form.calories.label }}
+                    {{ food_entry_form.calories(class="form-control") }}
+                    {% for error in food_entry_form.calories.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <div class="col-md-3 mb-3">
+                    {{ food_entry_form.meal_type.label }}
+                    {{ food_entry_form.meal_type(class="form-select") }}
+                    {% for error in food_entry_form.meal_type.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
                 </div>
             </div>
-        {% endfor %}
+            {{ food_entry_form.submit(class="btn btn-primary") }}
+        </form>
+      </div>
     </div>
-{% else %}
-    <p class="text-center text-muted">No meals generated yet. Please complete your profile and diet info to see suggestions.</p>
-{% endif %}
 
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Today's Logged Items</h5>
+        {% if today_entries %}
+          <ul class="list-group list-group-flush">
+            {% for entry in today_entries %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>{{ entry.description }}</strong> ({{ entry.calories }} kcal)
+                  <small class="text-muted"> - {{ entry.meal_type | capitalize }}</small>
+                  <small class="text-muted"> at {{ entry.date_posted.strftime('%H:%M') }}</small>
+                </div>
+                <form action="{{ url_for('delete_food_entry', entry_id=entry.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No food entries logged for today yet. Add some above!</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Weekly Calorie Progress</h5>
+        <canvas id="weeklyChart" height="100"></canvas>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Get Meal Suggestions (based on your goal)</h5>
+            <form method="POST" action="{{ url_for('dashboard') }}">
+                {{ meal_suggestion_form.hidden_tag() }}
+                <div class="mb-3">
+                    {{ meal_suggestion_form.breakfast.label }}
+                    {{ meal_suggestion_form.breakfast(class="form-control", rows="2") }}
+                </div>
+                <div class="mb-3">
+                    {{ meal_suggestion_form.lunch.label }}
+                    {{ meal_suggestion_form.lunch(class="form-control", rows="2") }}
+                </div>
+                <div class="mb-3">
+                    {{ meal_suggestion_form.dinner.label }}
+                    {{ meal_suggestion_form.dinner(class="form-control", rows="2") }}
+                </div>
+                <div class="mb-3">
+                    {{ meal_suggestion_form.snacks.label }}
+                    {{ meal_suggestion_form.snacks(class="form-control", rows="2") }}
+                </div>
+                {{ meal_suggestion_form.submit(class="btn btn-secondary") }}
+            </form>
+
+            {% if suggested_meal_plan_result %}
+                <h6 class="mt-4">Suggestions:</h6>
+                <ul class="list-group list-group-flush">
+                    {% for meal, suggestion in suggested_meal_plan_result.items() %}
+                        <li class="list-group-item"><strong>{{ meal | capitalize }}:</strong> {{ suggestion }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+  </div>
 {% endblock %}
 
+{% block scripts %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    window.weeklyLabels = {{ weekly_labels | tojson }};
+    window.weeklyData = {{ weekly_data | tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}
