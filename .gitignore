@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.so
+
+# Database files
+*.db
+*.sqlite3
+instance/*.db # Explicitly ignore any .db files inside the instance folder
+
+# Environment variables
+.env
+
+# Specific OS/IDE files
+.DS_Store # macOS specific
+.vscode/ # VS Code settings, optional but common to ignore
+*.swp # Vim swap files
+*~ # Backup files
